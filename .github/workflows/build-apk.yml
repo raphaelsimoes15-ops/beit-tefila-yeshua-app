@@ -1,0 +1,38 @@
+name: Gerar APK Beit Tefila Yeshua
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - principal
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar arquivos do projeto
+        uses: actions/checkout@v4
+
+      - name: Preparar projeto
+        run: |
+          unzip -o beit-tefila-yeshua-project.zip -d projeto
+          find projeto -type f -name gradlew -exec chmod +x {} \;
+
+      - name: Localizar projeto Android
+        run: |
+          GRADLEW=$(find projeto -type f -name gradlew | head -n 1)
+          echo "GRADLEW=$GRADLEW" >> $GITHUB_ENV
+          echo "DIRETORIO=$(dirname "$GRADLEW")" >> $GITHUB_ENV
+
+      - name: Compilar APK
+        working-directory: ${{ env.DIRETORIO }}
+        run: ./gradlew assembleDebug
+
+      - name: Disponibilizar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Beit-Tefila-Yeshua-APK
+          path: |
+            **/build/outputs/apk/debug/*.apk
