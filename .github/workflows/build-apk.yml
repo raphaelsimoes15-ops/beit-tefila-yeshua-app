@@ -29,9 +29,9 @@ jobs:
         run: |
           unzip -o beit-tefila-yeshua-project.zip -d projeto
 
-            - name: Compilar APK
+      - name: Compilar APK
         run: |
-          cd"$DIRETORIO"
+          cd "$DIRETORIO"
           chmod +x gradlew
           ./gradlew assembleDebug
 
