@@ -31,7 +31,7 @@ jobs:
 
             - name: Compilar APK
         run: |
-          cd "$DIRETORIO"
+          cd"$DIRETORIO"
           chmod +x gradlew
           ./gradlew assembleDebug
 
